@@ -14,4 +14,19 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Shared\Resources\DynamicRawWiql.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DynamicRawWiql.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Shared\Resources\DynamicRawWiql.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DynamicRawWiql.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

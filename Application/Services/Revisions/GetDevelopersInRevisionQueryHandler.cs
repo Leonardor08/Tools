@@ -5,7 +5,7 @@ using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Application
+namespace Application.Services.Revisions
 {
     public class GetDevelopersInRevisionQueryHandler(IRevisionRepository revisionRepository)
     {
@@ -76,7 +76,7 @@ namespace Application
             input = input.Trim();
 
             return input.StartsWith("<") && input.EndsWith(">")
-                || input.Contains("</") 
+                || input.Contains("</")
                 || Regex.IsMatch(input, "<.*?>");
         }
     }
