@@ -1,17 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
+  <!-- ADAPTADOR DE ENTRADA (HTTP): controladores REST, manejo de errores y composición de dependencias. -->
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>tools-azure-devops-trazabilidad</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
-
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infraestructure\Infraestructure.csproj" />
   </ItemGroup>
-
 </Project>

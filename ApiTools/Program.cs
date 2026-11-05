@@ -1,50 +1,32 @@
-using Application.Interfaces;
-using Application.Services.Revisions;
-using Application.Services.Wiql;
-using Infraestructure.Repositories;
 using System.Text.Json.Serialization;
-using static Domain.Enums;
+using ApiTools.Infraestructura;
+using Application;
+using Infraestructure;
 
-namespace ApiTools
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ManejadorExcepciones>();
+
+// Composición del hexágono: casos de uso (entrada) + adaptadores (salida).
+builder.Services.AgregarAplicacion();
+builder.Services.AgregarInfraestructura(builder.Configuration);
+
+var app = builder.Build();
+
+app.UseExceptionHandler();
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                    {
-                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                    });
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();                 
-
-            // Add services to the container.
-            builder.Services.AddScoped<RevisionRepository>();
-            builder.Services.AddScoped<WiqlRepository>();
-            builder.Services.AddScoped<GetDevelopersInRevisionQueryHandler>();
-            builder.Services.AddScoped<GetQueryById>();
-            builder.Services.AddScoped<GetQueryByRawWiql>();
-            builder.Services.AddHttpClient<IRevisionRepository, RevisionRepository>();
-            builder.Services.AddHttpClient<IWiqlRepository, WiqlRepository>();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.MapControllers();
+app.Run();
+
+public partial class Program { }

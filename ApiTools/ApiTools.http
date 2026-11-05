@@ -1,6 +1,12 @@
-@ApiTools_HostAddress = http://localhost:5131
+@host = http://localhost:5131
+@org = mi-organizacion
+@proyecto = mi-proyecto
 
-GET {{ApiTools_HostAddress}}/weatherforecast/
-Accept: application/json
+### Trazabilidad de un work item
+GET {{host}}/api/{{org}}/{{proyecto}}/workitems/1234/trazabilidad
 
-###
+### Historias activas de un responsable
+GET {{host}}/api/{{org}}/{{proyecto}}/consultas/historias?responsable=usuario@empresa.co
+
+### Consulta guardada
+GET {{host}}/api/{{org}}/{{proyecto}}/consultas/00000000-0000-0000-0000-000000000001
