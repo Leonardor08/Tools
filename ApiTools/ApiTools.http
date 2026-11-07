@@ -10,3 +10,12 @@ GET {{host}}/api/{{org}}/{{proyecto}}/consultas/historias?responsable=usuario@em
 
 ### Consulta guardada
 GET {{host}}/api/{{org}}/{{proyecto}}/consultas/00000000-0000-0000-0000-000000000001
+
+### Registrar un corte de trazabilidad (COMANDO)
+POST {{host}}/api/{{org}}/{{proyecto}}/workitems/1234/cortes
+Content-Type: application/json
+
+{ "motivo": "Evidencia para informe de supervisión de noviembre" }
+
+### Listar cortes de un work item (CONSULTA)
+GET {{host}}/api/{{org}}/{{proyecto}}/workitems/1234/cortes

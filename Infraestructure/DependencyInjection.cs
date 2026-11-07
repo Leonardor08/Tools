@@ -3,6 +3,7 @@ using System.Text;
 using Application.Puertos.Salida;
 using Infraestructure.Adaptadores.AzureDevOps;
 using Infraestructure.Adaptadores.Html;
+using Infraestructure.Adaptadores.Persistencia;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,10 @@ public static class DependencyInjection
         services.AddScoped<IConsultasWorkItemsPuerto, ConsultasAzureDevOpsAdaptador>();
         services.AddSingleton<ILimpiadorHtml, LimpiadorHtmlAgilityPack>();
         services.AddSingleton<IReloj, RelojSistema>();
+
+        // Lado de escritura (CQRS): persistencia de cortes de trazabilidad.
+        services.Configure<AlmacenCortesOpciones>(configuracion.GetSection(AlmacenCortesOpciones.Seccion));
+        services.AddSingleton<ICortesTrazabilidadRepositorio, AlmacenCortesArchivoJson>();
         return services;
     }
 }

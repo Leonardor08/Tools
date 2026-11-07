@@ -1,13 +1,14 @@
+using Application.Consultas;
+using Application.Cqrs;
 using Application.Dtos;
-using Application.Puertos.Entrada;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTools.Controllers;
 
-/// <summary>Adaptador de entrada HTTP: el controlador solo traduce HTTP ⇄ caso de uso.</summary>
+/// <summary>Adaptador de entrada HTTP: traduce la petición a una CONSULTA y la envía al mediador.</summary>
 [ApiController]
 [Route("api/{organizacion}/{proyecto}/workitems")]
-public sealed class TrazabilidadController(IObtenerTrazabilidadWorkItem obtenerTrazabilidad) : ControllerBase
+public sealed class TrazabilidadController(IMediador mediador) : ControllerBase
 {
     /// <summary>Periodos de asignación de un work item: responsable, duración, vencimiento y comentarios.</summary>
     [HttpGet("{workItemId:int}/trazabilidad")]
@@ -16,5 +17,5 @@ public sealed class TrazabilidadController(IObtenerTrazabilidadWorkItem obtenerT
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status502BadGateway)]
     public Task<TrazabilidadWorkItemDto> ObtenerAsync(string organizacion, string proyecto, int workItemId, CancellationToken ct)
-        => obtenerTrazabilidad.EjecutarAsync(organizacion, proyecto, workItemId, ct);
+        => mediador.EnviarAsync(new ObtenerTrazabilidadConsulta(organizacion, proyecto, workItemId), ct);
 }

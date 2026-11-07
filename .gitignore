@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 # Secretos locales
 appsettings.*.local.json
+
+# Cortes de trazabilidad generados localmente
+datos/

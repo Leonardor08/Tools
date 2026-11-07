@@ -1,4 +1,5 @@
 using Application.Excepciones;
+using Domain;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ public sealed class ManejadorExcepciones(IProblemDetailsService problemas, ILogg
         {
             ValidacionException v => new ValidationProblemDetails(v.Errores.ToDictionary(e => e.Key, e => e.Value))
                 { Status = StatusCodes.Status400BadRequest, Title = v.Message },
+            ReglaDominioException d => new ProblemDetails { Status = StatusCodes.Status422UnprocessableEntity, Title = d.Message },
             RecursoNoEncontradoException n => new ProblemDetails { Status = StatusCodes.Status404NotFound, Title = n.Message },
             ServicioExternoException s => new ProblemDetails { Status = StatusCodes.Status502BadGateway, Title = s.Message },
             _ => new ProblemDetails { Status = StatusCodes.Status500InternalServerError, Title = "Error inesperado." }
